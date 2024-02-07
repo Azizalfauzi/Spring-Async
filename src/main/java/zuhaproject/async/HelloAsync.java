@@ -6,10 +6,21 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 
 @Slf4j
 @Component
 public class HelloAsync {
+
+    @Async
+    @SneakyThrows
+    public Future<String> hello(final String name) {
+        CompletableFuture<String> future = new CompletableFuture<>();
+        Thread.sleep(Duration.ofSeconds(2));
+        future.complete("Hello" + name + "from thread" + Thread.currentThread());
+        return future;
+    }
 
     @SneakyThrows
     @Async
